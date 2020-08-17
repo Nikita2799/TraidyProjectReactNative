@@ -12,7 +12,10 @@ import { MyBetsScreen } from "./src/screens/MyBetsScreen";
 import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { AuthContext } from "./context";
 import iconSet from "@expo/vector-icons/build/Fontisto";
-import { Icons } from "./src/component/Icons";
+import { CryptoScreen } from "./src/screens/cureentBetScreens/CryptoScreen";
+import { ResourseScreen } from "./src/screens/cureentBetScreens/ResourseScreen";
+import { StockScreen } from "./src/screens/cureentBetScreens/StockScreen";
+import { CurrencyScreen } from "./src/screens/cureentBetScreens/CurrencyScreen";
 
 const AuthStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -22,12 +25,16 @@ const ProfileStack = createStackNavigator();
 
 const BetsStackScreen = () => {
   return (
-    <BetsStack.Navigator>
+    <BetsStack.Navigator screenOptions={{ headerShown: false }}>
       <BetsStack.Screen
         name="Bets"
         options={{ headerShown: false }}
         component={BetsScreen}
       />
+      <BetsStack.Screen name="Crypto" component={CryptoScreen} />
+      <BetsStack.Screen name="Resources" component={ResourseScreen} />
+      <BetsStack.Screen name="Stocks" component={StockScreen} />
+      <BetsStack.Screen name="Currency" component={CurrencyScreen} />
     </BetsStack.Navigator>
   );
 };
