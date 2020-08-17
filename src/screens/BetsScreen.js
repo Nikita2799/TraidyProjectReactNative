@@ -11,7 +11,7 @@ import {
 import { MainHeader } from "../component/MainHeader";
 //import { BottomNaigation } from "../navigation/BottomNavigation";
 
-export const BetsScreen = () => {
+export const BetsScreen = ({ navigation }) => {
   return (
     <ImageBackground
       source={require("../../assets/img/bg-bets.png")}
@@ -20,16 +20,28 @@ export const BetsScreen = () => {
       <MainHeader />
 
       <View style={styles.blockButtonContainer}>
-        <TouchableOpacity style={styles.blockButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Crypto")}
+          style={styles.blockButton}
+        >
           <Text style={styles.textButton}>Crypto</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.blockButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Resources")}
+          style={styles.blockButton}
+        >
           <Text style={styles.textButton}>Resources</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.blockButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Currency")}
+          style={styles.blockButton}
+        >
           <Text style={styles.textButton}>Currency</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.blockButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Stocks")}
+          style={styles.blockButton}
+        >
           <Text style={styles.textButton}>Stocks</Text>
         </TouchableOpacity>
       </View>
