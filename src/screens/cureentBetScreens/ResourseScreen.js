@@ -26,7 +26,7 @@ export const ResourseScreen = () => {
 
 const styles = StyleSheet.create({
   img: {
-    flex: 2,
+    flex: 1,
   },
   scrollView: {
     paddingVertical: 15,
