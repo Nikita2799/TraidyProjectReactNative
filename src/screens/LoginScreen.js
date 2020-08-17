@@ -6,11 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
   ImageBackground,
+  Alert,
+  AsyncStorage,
 } from "react-native";
+import axios from "axios";
+import { AuthContext } from "../../context";
 
 export const LoginScreen = ({ navigation }) => {
   const url = "http://traidy-game.com/users/loginUser";
-
+  const { signIn } = React.useContext(AuthContext);
   const [login, setLogin] = useState({
     login: "",
   });
@@ -18,29 +22,33 @@ export const LoginScreen = ({ navigation }) => {
     password: "",
   });
 
-  const postData = async () => {
-    try {
-      let d = { login, password };
-      console.log(d);
-      const responce = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(d),
+  const postData = () => {
+    // if (login.login === "" && password.password === "") {
+    //   Alert.alert("Please write in all inputs");
+    //  return;
+    //}
+    axios
+      .post(url, {
+        login: login.login,
+        password: password.password,
+      })
+      .then((response) => {
+        if (response.data.success === 0) {
+          const _storeData = async () => {
+            try {
+              await AsyncStorage.setItem("trId", response.data.traidy_id);
+              signIn();
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          _storeData();
+          //navigation.navigate("Bets");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      let data = await responce.json();
-      console.log(data);
-      //if (data.success === 1) {
-      //  setLoginData("");
-      //}
-    } catch (e) {
-      console.log(e.toString());
-    }
-    // const data =  responce.json()
-    // Alert.alert(data)
-  };
-
-  const openRegScreen = () => {
-    navigation.navigate("Registry");
   };
 
   return (
@@ -67,7 +75,6 @@ export const LoginScreen = ({ navigation }) => {
         <TextInput
           autoCorrect={false}
           style={styles.input}
-          value={login}
           onChangeText={(te) => setLogin({ login: te })}
         />
         <Text
@@ -85,7 +92,6 @@ export const LoginScreen = ({ navigation }) => {
         <TextInput
           autoCorrect={false}
           style={styles.input}
-          value={password}
           onChangeText={(t) => setPassword({ password: t })}
         />
       </View>
@@ -104,7 +110,7 @@ export const LoginScreen = ({ navigation }) => {
         >
           Don't have account?
         </Text>
-        <TouchableOpacity onPress={openRegScreen}>
+        <TouchableOpacity onPress={() => navigation.navigate("Registration")}>
           <Text style={{ color: "#0063E0", marginBottom: 2 }}>Sign up</Text>
         </TouchableOpacity>
       </View>

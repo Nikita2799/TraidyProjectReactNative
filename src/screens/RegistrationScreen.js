@@ -8,6 +8,7 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 
 export const RegistrationScreen = ({ navigation }) => {
@@ -15,28 +16,29 @@ export const RegistrationScreen = ({ navigation }) => {
 
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setName] = useState("dsad");
+  const [name, setName] = useState("");
 
   const postData = () => {
-    console.log(login.login);
-    console.log(password.password);
-
-    const data = {
-      login: login.login,
-      password: password.password,
-      username: "Nik",
-    };
-    const str = JSON.stringify(data);
-
-    console.log(str);
+    if (login === "" && password === "" && name === "") {
+      Alert.alert("Please write in all inputs");
+      return;
+    }
 
     axios
       .post(url, {
         login: login.login,
         password: password.password,
+        username: name.name,
       })
       .then((response) => {
         console.log(response);
+        if (response.success === 0) {
+          Alert.alert("Success");
+          setTimeout(5000);
+          navigation.navigate("Login");
+        } else {
+          Alert.alert("Please repeat input");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -71,7 +73,7 @@ export const RegistrationScreen = ({ navigation }) => {
   };
 
   const onBackHandler = () => {
-    navigation.navigate("Main");
+    navigation.navigate("Login");
   };
   return (
     <ImageBackground
@@ -120,6 +122,23 @@ export const RegistrationScreen = ({ navigation }) => {
           onChangeText={(t) => setPassword({ password: t })}
           style={styles.input}
         />
+        <Text
+          style={{
+            color: "#FFFF",
+            fontFamily: "open-light",
+            fontSize: 15,
+            marginRight: "70%",
+            marginBottom: 10,
+            marginTop: 10,
+          }}
+        >
+          Nikname
+        </Text>
+        <TextInput
+          autoCorrect={false}
+          onChangeText={(t) => setName({ password: t })}
+          style={styles.input}
+        />
       </View>
       <View style={{ justifyContent: "flex-start", alignItems: "center" }}>
         <TouchableOpacity onPress={postData} style={styles.button}>
@@ -161,55 +180,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "90%",
-    height: "13%",
-    borderWidth: 1,
-    borderColor: "#9C9C9C",
-    borderRadius: 5,
-    backgroundColor: "#243D61",
-    marginBottom: 0,
-    paddingLeft: 20,
-    color: "#FFFF",
-    fontFamily: "open-light",
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "90%",
-    height: "20%",
-    borderRadius: 5,
-    backgroundColor: "#0063E0",
-  },
-  img: {
-    flex: 1,
-    resizeMode: "cover",
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  headerBox: {
-    paddingHorizontal: 40,
-    paddingVertical: 10,
-    height: "20%",
-    justifyContent: "flex-end",
-  },
-  textWelcome: {
-    color: "#ffff",
-    fontSize: 36,
-    fontFamily: "open-light",
-  },
-  textSign: {
-    color: "#9C9C9C",
-    fontSize: 23,
-    fontFamily: "open-light",
-  },
-  inputs: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  input: {
-    width: "90%",
-    height: "13%",
+    height: "10%",
     borderWidth: 1,
     borderColor: "#9C9C9C",
     borderRadius: 5,
