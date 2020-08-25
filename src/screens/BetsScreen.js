@@ -21,25 +21,25 @@ export const BetsScreen = ({ navigation }) => {
 
       <View style={styles.blockButtonContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Crypto")}
+          onPress={() => navigation.push("Crypto")}
           style={styles.blockButton}
         >
           <Text style={styles.textButton}>Crypto</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Resources")}
+          onPress={() => navigation.push("Resources")}
           style={styles.blockButton}
         >
           <Text style={styles.textButton}>Resources</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Currency")}
+          onPress={() => navigation.push("Currency")}
           style={styles.blockButton}
         >
           <Text style={styles.textButton}>Currency</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Stocks")}
+          onPress={() => navigation.push("Stocks")}
           style={styles.blockButton}
         >
           <Text style={styles.textButton}>Stocks</Text>
