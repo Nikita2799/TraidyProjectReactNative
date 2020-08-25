@@ -1,4 +1,4 @@
-import React, { useState, version } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -9,44 +9,71 @@ import {
   ImageBackground,
 } from "react-native";
 import axios from "axios";
+
+import { getLocalData } from "../api/getLoacalData";
+import { setLocalData } from "../api/setLocalData";
+import numbro from "numbro";
+
 export const MainHeader = () => {
   const [balance, setBalance] = useState();
-  const [capital, setCapital] = useState();
+  //const [capitalStr, setCapitalStr] = useState();
+
+  //  const [lastCapital, setLastCapital] = useState();
+  const [capitalization, setCapitalization] = useState({
+    capital: 0,
+    lastCapital: 0,
+    capitalStr: "",
+  });
+
   const url = "http://traidy-game.com/users/getUserData";
 
-  const _retrieveData = async () => {
-    try {
-      let trId = await AsyncStorage.getItem("trId");
-      console.log(trId);
-      if (trId !== null) {
-        axios
-          .post(url, {
-            trId: trId,
-          })
-          .then((response) => {
-            //console.log(response);
-            setBalance(
-              Intl.NumberFormat("ru-RU", {
-                maximumSignificantDigits: 3,
-              }).format(response.data.amount)
-            );
-            setCapital(
-              Intl.NumberFormat("ru-RU", {
-                maximumSignificantDigits: 3,
-              }).format(response.data.capitalization)
-            );
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
+  useEffect(() => {
+    console.log("request 1");
+    getLocalData().then((trId) => {
+      if (trId === null) {
+        return;
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  _retrieveData();
+      axios
+        .post(url, {
+          trId: trId,
+        })
+        .then((response) => {
+          console.log(response.data.capitalizationLast);
+          setBalance(
+            numbro(response.data.amount).format({
+              thousandSeparated: true,
+              mantissa: 2,
+            })
+          );
+          setCapitalization({
+            lastCapital: response.data.capitalizationLast,
+          });
+        })
+        .then(() => {
+          return axios.post("http://traidy-game.com/users/getCapital", {
+            trId: trId,
+          });
+        })
+        .then((response) => {
+          //console.log(Number(response.data.data));
+          setCapitalization({
+            capital: Number(response.data.data),
+            capitalStr: numbro(response.data.data).format({
+              mantissa: 2,
+              thousandSeparated: true,
+            }),
+          });
+
+          //console.log(response.data.data);
+          console.log(capitalization.lastCapital);
+          //console.log(capitalization.capital);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  }, [balance]);
 
   return (
     <View style={styles.header}>
@@ -68,12 +95,17 @@ export const MainHeader = () => {
       <View style={styles.balance}>
         <Text style={{ fontWeight: "600", fontSize: 25 }}>
           {balance}
-          <Text style={{ color: "#0063E0" }}>TR</Text>
+          <Text style={{ color: "#0063E0" }}> TR</Text>
         </Text>
       </View>
       <View style={styles.capital}>
-        <Text style={{ fontSize: 17 }}>
-          {capital}
+        <Text
+          style={{
+            fontSize: 17,
+            color: "#1ED760",
+          }}
+        >
+          {capitalization.capitalStr}
           <Text style={{ color: "#0063E0" }}> TR</Text>
         </Text>
       </View>

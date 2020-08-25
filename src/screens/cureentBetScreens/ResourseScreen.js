@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, ImageBackground, FlatList } from "react-native";
 import { MainHeader } from "../../component/MainHeader";
 import { ResourseBets } from "../../component/bets/ResourseBets";
-export const ResourseScreen = () => {
+export const ResourseScreen = ({ navigation }) => {
   const [resourse, setResourse] = useState([
     { id: "1", name: "Gold" },
     { id: "0", name: "Silver" },
@@ -18,7 +18,9 @@ export const ResourseScreen = () => {
         style={styles.scrollView}
         keyExtractor={(item) => item.id}
         data={resourse}
-        renderItem={({ item }) => <ResourseBets data={item} />}
+        renderItem={({ item }) => (
+          <ResourseBets navigation={navigation} data={item} />
+        )}
       />
     </ImageBackground>
   );

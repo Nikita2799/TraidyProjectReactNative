@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, ImageBackground, FlatList } from "react-native";
 import { MainHeader } from "../../component/MainHeader";
 import { StocksBets } from "../../component/bets/StocksBets";
-export const StockScreen = () => {
+export const StockScreen = ({ navigation }) => {
   const [stacks, setStacks] = useState([
     { id: "1", name: "Tesla" },
     { id: "0", name: "Apple", iconsName: "apple" },
@@ -18,7 +18,9 @@ export const StockScreen = () => {
         style={styles.scrollView}
         keyExtractor={(item) => item.id}
         data={stacks}
-        renderItem={({ item }) => <StocksBets data={item} />}
+        renderItem={({ item }) => (
+          <StocksBets navigation={navigation} data={item} />
+        )}
       />
     </ImageBackground>
   );

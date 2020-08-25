@@ -5,5 +5,6 @@ export async function bootstrap() {
     "open-bold": require("../assets/fonts/OpenSans-Bold.ttf"),
     "open-italic": require("../assets/fonts/OpenSans-Italic.ttf"),
     "open-light": require("../assets/fonts/OpenSans-Light.ttf"),
+    "open-regular": require("../assets/fonts/OpenSans-Regular.ttf"),
   });
 }
