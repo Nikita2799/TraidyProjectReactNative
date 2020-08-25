@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, ImageBackground, FlatList } from "react-native";
 import { MainHeader } from "../../component/MainHeader";
 import { CurrencyBets } from "../../component/bets/CurrencyBets";
-export const CurrencyScreen = () => {
+export const CurrencyScreen = ({ navigation }) => {
   const [currency, setCurrency] = useState([
     { id: "1", name: "EUR", iconsName: "euro-sign" },
     { id: "0", name: "RUB", iconsName: "ruble-sign" },
@@ -19,7 +19,9 @@ export const CurrencyScreen = () => {
         style={styles.scrollView}
         keyExtractor={(item) => item.id}
         data={currency}
-        renderItem={({ item }) => <CurrencyBets data={item} />}
+        renderItem={({ item }) => (
+          <CurrencyBets navigation={navigation} data={item} />
+        )}
       />
     </ImageBackground>
   );

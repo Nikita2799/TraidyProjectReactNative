@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { AuthContext } from "../../context";
+import { setLocalData } from "../api/setLocalData";
 
 export const LoginScreen = ({ navigation }) => {
   const url = "http://traidy-game.com/users/loginUser";
@@ -34,16 +35,8 @@ export const LoginScreen = ({ navigation }) => {
       })
       .then((response) => {
         if (response.data.success === 0) {
-          const _storeData = async () => {
-            try {
-              await AsyncStorage.setItem("trId", response.data.traidy_id);
-              signIn();
-            } catch (error) {
-              console.log(error);
-            }
-          };
-          _storeData();
-          //navigation.navigate("Bets");
+          setLocalData(response.data.traidy_id);
+          signIn();
         }
       })
       .catch((err) => {

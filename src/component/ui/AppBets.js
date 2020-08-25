@@ -1,11 +1,18 @@
-import React from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
+import { InvestModal } from "../InvestModal";
 
-export const AppBets = (props) => {
+export const AppBets = (props, { setModal }) => {
   return (
-    <TouchableOpacity activeOpacity={0.7} style={styles.mainContainer}>
-      {props.children}
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity
+        onPress={setModal(true)}
+        activeOpacity={0.7}
+        style={styles.mainContainer}
+      >
+        {props.children}
+      </TouchableOpacity>
+    </View>
   );
 };
 

@@ -21,7 +21,7 @@ const AuthStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 const BetsStack = createStackNavigator();
 const MyBetsStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
+//const ProfileStack = createStackNavigator();
 
 const BetsStackScreen = () => {
   return (
@@ -49,7 +49,7 @@ const MyBetsStackScreen = () => {
     </MyBetsStack.Navigator>
   );
 };
-const ProfileStackScreen = () => {
+/*const ProfileStackScreen = () => {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
@@ -59,11 +59,11 @@ const ProfileStackScreen = () => {
       />
     </ProfileStack.Navigator>
   );
-};
+};*/
 
 export default () => {
   const [isReady, setIsReady] = useState(false);
-  const [userToken, setUserToken] = useState(true);
+  const [userToken, setUserToken] = useState(false);
   const authContext = React.useMemo(() => {
     return {
       signIn: () => {
@@ -113,7 +113,7 @@ export default () => {
                 },
               }}
             />
-            <Tabs.Screen
+            {/*<Tabs.Screen
               name="Profile"
               component={ProfileStackScreen}
               options={{
@@ -123,7 +123,7 @@ export default () => {
                   );
                 },
               }}
-            />
+            />*/}
           </Tabs.Navigator>
         ) : (
           <AuthStack.Navigator>

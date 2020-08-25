@@ -31,10 +31,10 @@ export const RegistrationScreen = ({ navigation }) => {
         username: name.name,
       })
       .then((response) => {
-        console.log(response);
-        if (response.success === 0) {
+        console.log(response.data.success);
+        if (response.data.success === 0) {
           Alert.alert("Success");
-          setTimeout(5000);
+          //setTimeout(5000);
           navigation.navigate("Login");
         } else {
           Alert.alert("Please repeat input");
@@ -136,7 +136,7 @@ export const RegistrationScreen = ({ navigation }) => {
         </Text>
         <TextInput
           autoCorrect={false}
-          onChangeText={(t) => setName({ password: t })}
+          onChangeText={(t) => setName({ name: t })}
           style={styles.input}
         />
       </View>
