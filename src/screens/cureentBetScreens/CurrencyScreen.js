@@ -4,9 +4,9 @@ import { MainHeader } from "../../component/MainHeader";
 import { CurrencyBets } from "../../component/bets/CurrencyBets";
 export const CurrencyScreen = ({ navigation }) => {
   const [currency, setCurrency] = useState([
-    { id: "1", name: "EUR", iconsName: "euro-sign" },
-    { id: "0", name: "RUB", iconsName: "ruble-sign" },
-    { id: "2", name: "UAN", iconsName: "dollar-sign" },
+    { id: "1", name: "USD", iconsName: "euro-sign", rate: "1.11" },
+    { id: "0", name: "RUB", iconsName: "ruble-sign", rate: "88.60" },
+    { id: "2", name: "UAN", iconsName: "dollar-sign", rate: "32.75" },
   ]);
   const [modal, setModal] = useState(false);
   return (

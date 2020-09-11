@@ -132,7 +132,7 @@ export const RegistrationScreen = ({ navigation }) => {
             marginTop: 10,
           }}
         >
-          Nikname
+          Nickname
         </Text>
         <TextInput
           autoCorrect={false}

@@ -4,8 +4,8 @@ import { MainHeader } from "../../component/MainHeader";
 import { StocksBets } from "../../component/bets/StocksBets";
 export const StockScreen = ({ navigation }) => {
   const [stacks, setStacks] = useState([
-    { id: "1", name: "Tesla" },
-    { id: "0", name: "Apple", iconsName: "apple" },
+    { id: "1", name: "Tesla", rate: "5" },
+    { id: "0", name: "Apple", iconsName: "apple", rate: "5" },
   ]);
   const [modal, setModal] = useState(false);
   return (

@@ -4,13 +4,8 @@ import { MainHeader } from "./MainHeader";
 import { TouchableOpacity, TextInput } from "react-native-gesture-handler";
 import { getLocalData } from "../api/getLoacalData";
 import axios from "axios";
-
-import { NavigationActions, StackActions } from "react-navigation";
-
 export const InvestModal = ({ navigation, visible, data, onBack }) => {
-  const [invest, setInvest] = useState({
-    invest: "",
-  });
+  const [invest, setInvest] = useState(null);
   const [receive, setReceive] = useState();
   const postInvest = () => {
     getLocalData()
@@ -20,7 +15,7 @@ export const InvestModal = ({ navigation, visible, data, onBack }) => {
             trId: trId,
             name: data.name,
             amount: invest.invest,
-            rate: "5",
+            rate: data.rate,
           })
           .then((responce) => {
             navigation.navigate("Bets");
@@ -33,6 +28,14 @@ export const InvestModal = ({ navigation, visible, data, onBack }) => {
         console.log(err);
       });
   };
+  //console.log(data.rate);
+  let rate = null;
+  let invv = null;
+  if (invest !== null) {
+    rate = Number(data.rate);
+    invv = (Number(invest.invest) * rate).toFixed(4);
+  } else {
+  }
 
   return (
     <Modal animationType="slide" visible={visible}>
@@ -55,7 +58,9 @@ export const InvestModal = ({ navigation, visible, data, onBack }) => {
           <TextInput
             keyboardType="numeric"
             style={styles.inputs}
+            value={invv}
             onChangeText={(text) => setReceive(text)}
+            editable={false}
           />
         </View>
         <View style={styles.buttonContainer}>

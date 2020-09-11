@@ -4,9 +4,8 @@ import {
   View,
   Image,
   Text,
+  Dimensions,
   TouchableOpacity,
-  AsyncStorage,
-  ImageBackground,
 } from "react-native";
 import axios from "axios";
 
@@ -16,19 +15,14 @@ import numbro from "numbro";
 
 export const MainHeader = () => {
   const [balance, setBalance] = useState();
-  //const [capitalStr, setCapitalStr] = useState();
-
-  //  const [lastCapital, setLastCapital] = useState();
   const [capitalization, setCapitalization] = useState({
-    capital: 0,
-    lastCapital: 0,
+    capital: "#000",
+    lastCapital: "5000",
     capitalStr: "",
   });
-
   const url = "http://traidy-game.com/users/getUserData";
 
   useEffect(() => {
-    console.log("request 1");
     getLocalData().then((trId) => {
       if (trId === null) {
         return;
@@ -39,16 +33,16 @@ export const MainHeader = () => {
           trId: trId,
         })
         .then((response) => {
-          console.log(response.data.capitalizationLast);
           setBalance(
             numbro(response.data.amount).format({
               thousandSeparated: true,
               mantissa: 2,
             })
           );
-          setCapitalization({
+          setCapitalization((prev) => ({
+            ...prev,
             lastCapital: response.data.capitalizationLast,
-          });
+          }));
         })
         .then(() => {
           return axios.post("http://traidy-game.com/users/getCapital", {
@@ -57,16 +51,14 @@ export const MainHeader = () => {
         })
         .then((response) => {
           //console.log(Number(response.data.data));
-          setCapitalization({
-            capital: Number(response.data.data),
+          setCapitalization((prev) => ({
+            ...prev,
             capitalStr: numbro(response.data.data).format({
               mantissa: 2,
               thousandSeparated: true,
             }),
-          });
+          }));
 
-          //console.log(response.data.data);
-          console.log(capitalization.lastCapital);
           //console.log(capitalization.capital);
         })
         .catch((err) => {
@@ -74,6 +66,66 @@ export const MainHeader = () => {
         });
     });
   }, [balance]);
+  const updateHandler = () => {
+    getLocalData().then((trId) => {
+      if (trId === null) {
+        return;
+      }
+
+      axios
+        .post(url, {
+          trId: trId,
+        })
+        .then((response) => {
+          setBalance(
+            numbro(response.data.amount).format({
+              thousandSeparated: true,
+              mantissa: 2,
+            })
+          );
+          setCapitalization((prev) => ({
+            ...prev,
+            lastCapital: response.data.capitalizationLast,
+          }));
+        })
+        .then(() => {
+          return axios.post("http://traidy-game.com/users/getCapital", {
+            trId: trId,
+          });
+        })
+        .then((response) => {
+          let capital = Number(capitalization.lastCapital);
+          let capitalLast = Number(response.data.data);
+          console.log(capital, capitalLast);
+          if (capital > capitalLast) {
+            setCapitalization((prev) => ({
+              ...prev,
+              capital: "red",
+            }));
+          } else if (capital < capitalLast) {
+            setCapitalization((prev) => ({
+              ...prev,
+              capital: "green",
+            }));
+          } else if (capital == capitalLast) {
+            setCapitalization((prev) => ({
+              ...prev,
+              capital: "#000",
+            }));
+          }
+          setCapitalization((prev) => ({
+            ...prev,
+            capitalStr: numbro(response.data.data).format({
+              mantissa: 2,
+              thousandSeparated: true,
+            }),
+          }));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  };
 
   return (
     <View style={styles.header}>
@@ -93,33 +145,49 @@ export const MainHeader = () => {
       </View>
       <View style={styles.textHeader}></View>
       <View style={styles.balance}>
+        <Text>Amount to invest</Text>
         <Text style={{ fontWeight: "600", fontSize: 25 }}>
           {balance}
           <Text style={{ color: "#0063E0" }}> TR</Text>
         </Text>
       </View>
       <View style={styles.capital}>
+        <Text>Capitalization</Text>
         <Text
           style={{
             fontSize: 17,
-            color: "#1ED760",
+            color: capitalization.capital,
           }}
         >
           {capitalization.capitalStr}
           <Text style={{ color: "#0063E0" }}> TR</Text>
         </Text>
+        <TouchableOpacity style={styles.buttonUpdate} onPress={updateHandler}>
+          <Text style={styles.colorUpdate}>UPDATE</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.mainContainer}></View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  colorUpdate: {
+    color: "#fff",
+    fontSize: 16,
+  },
+  buttonUpdate: {
+    marginTop: 10,
+    backgroundColor: "#0063E0",
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
   header: {
     backgroundColor: "#FFFF",
-    height: "23%",
+    height: Dimensions.get("window").width > 375 ? "28%" : "35%",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
+    paddingVertical: Dimensions.get("window").width > 375 ? 15 : 2,
   },
   images: {
     flexDirection: "row",

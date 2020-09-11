@@ -4,8 +4,8 @@ import { MainHeader } from "../../component/MainHeader";
 import { ResourseBets } from "../../component/bets/ResourseBets";
 export const ResourseScreen = ({ navigation }) => {
   const [resourse, setResourse] = useState([
-    { id: "1", name: "Gold" },
-    { id: "0", name: "Silver" },
+    { id: "1", name: "Gold", rate: "5" },
+    { id: "0", name: "Silver", rate: "5" },
   ]);
   const [modal, setModal] = useState(false);
   return (

@@ -8,8 +8,30 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { MainHeader } from "./MainHeader";
+import { getLocalData } from "../api/getLoacalData";
+import axios from "axios";
 
 export const CurrentBetModal = ({ visible, data, onBack }) => {
+  const deleteHandler = () => {
+    getLocalData().then((trId) => {
+      if (trId !== null) {
+        let url = "http://traidy-game.com/users/sellOne";
+        axios
+          .post(url, {
+            trId: trId,
+            id: data.id,
+            invested: data.invested,
+            rate: data.sellPrice,
+          })
+          .then(({ res }) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
   return (
     <Modal visible={visible}>
       <ImageBackground
@@ -30,13 +52,13 @@ export const CurrentBetModal = ({ visible, data, onBack }) => {
         </Text>
         <View style={styles.textContainer}>
           <Text style={styles.text}>Investment#: {data.id}</Text>
-          <Text style={styles.text}>Assets: {data.nameInvest}</Text>
+          <Text style={styles.text}>Asset: {data.nameInvest}</Text>
           <Text style={styles.text}>Invested: {data.invested}</Text>
-          <Text style={styles.text}>Current Rate:</Text>
+          <Text style={styles.text}>Current Rate: {data.sellPrice}</Text>
           <Text style={styles.text}>Profit: </Text>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={deleteHandler}>
             <Text style={{ color: "#FFFF", fontFamily: "open-regular" }}>
               Sell bet
             </Text>

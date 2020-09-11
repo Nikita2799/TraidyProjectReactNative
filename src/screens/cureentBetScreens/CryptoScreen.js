@@ -5,8 +5,8 @@ import { CryptoBets } from "../../component/bets/CrypyoBets";
 
 export const CryptoScreen = ({ navigation }) => {
   const [crypto, setCrypto] = useState([
-    { id: "1", name: "Bitcoin", iconsName: "bitcoin" },
-    { id: "0", name: "Ethereum", iconsName: "ethereum" },
+    { id: "1", name: "Bitcoin", iconsName: "bitcoin", rate: "0.00010" },
+    { id: "0", name: "Ethereum", iconsName: "ethereum", rate: "0.0030" },
   ]);
   const [modal, setModal] = useState(false);
 

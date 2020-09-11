@@ -18,7 +18,7 @@ export const MyBetsScreen = ({ navigation }) => {
           })
           .then(({ data }) => {
             // console.log(data);
-            console.log(data);
+            //console.log(data);
             setMyBet(data.data);
             return;
           })
@@ -28,7 +28,11 @@ export const MyBetsScreen = ({ navigation }) => {
       }
     });
   };
-  setTimeout(getBets, 5000);
+  getBets();
+  const updateHandler = () => {
+    getBets();
+  };
+  //setTimeout(getBets, 5000);
   const deleteOne = (data) => {
     Alert.alert(
       "Are you sure?",
@@ -138,11 +142,35 @@ export const MyBetsScreen = ({ navigation }) => {
           <MyBets data={item} deleteOne={() => deleteOne(item)} />
         )}
       />
+      <View style={styles.updateContainer}>
+        <TouchableOpacity style={styles.buttonUpdate} onPress={updateHandler}>
+          <Text style={styles.colorUpdate}>UPDATE</Text>
+        </TouchableOpacity>
+      </View>
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  updateContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingBottom: 20,
+  },
+  colorUpdate: {
+    color: "#fff",
+    fontSize: 16,
+    //width: "20%",
+  },
+  buttonUpdate: {
+    marginTop: 10,
+    backgroundColor: "#0063E0",
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    width: "100%",
+    borderRadius: 5,
+  },
   img: {
     flex: 1,
     resizeMode: "cover",
